@@ -1,9 +1,10 @@
 plugins {
     java
     alias(libs.plugins.lavalink)
+    kotlin("jvm")
 }
 
-group = "com.example"
+group = "hyl.lavabili"
 version = "0.1.0"
 
 lavalinkPlugin {
@@ -26,4 +27,8 @@ tasks {
 
 dependencies {
     // add your dependencies here
+    implementation(kotlin("stdlib-jdk8"))
+}
+repositories {
+    mavenCentral()
 }
