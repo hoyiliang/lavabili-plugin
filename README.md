@@ -1,4 +1,11 @@
+# lavabili-plugin
+A lavalink plugin written to add Bilibili as an additional audio playing source.
+
+This plugin is rebuilt for latest Lavalink (v4) by referring [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
+
 # lavalink-plugin-template
+
+**Note: This project has been converted to use Kotlin 1.8.22.**
 
 This is a template for creating a plugin for [Lavalink](https://github.com/lavalink-devs/Lavalink). It is written in
 java, but you can also use kotlin (version `1.8.22`) if you want.
