@@ -1,4 +1,6 @@
 # lavabili-plugin
+<img src="https://github.com/user-attachments/assets/1bfb4369-6438-4e5e-9e6e-72b94cb69a37" alt="Alt Text" style="width:33%; height:auto;">
+
 A lavalink plugin written to add Bilibili as an additional audio playing source.
 
 This plugin is rebuilt for latest Lavalink (v4) based on [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
