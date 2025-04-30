@@ -91,6 +91,9 @@ class BilibiliAudioSourceManager : AudioSourceManager {
     private fun loadVideo(trackData: JsonBrowser): AudioTrack {
         val bvid = trackData.get("bvid").`as`(String::class.java)
 
+        val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
+        log.atInfo().log("DEBUG: ${trackData.text()}")
+
         return BilibiliAudioTrack(
             AudioTrackInfo(
                 trackData.get("title").`as`(String::class.java),
@@ -98,7 +101,9 @@ class BilibiliAudioSourceManager : AudioSourceManager {
                 trackData.get("duration").asLong(0) * 1000,
                 bvid,
                 false,
-                getVideoUrl(bvid)
+                getVideoUrl(bvid),
+                trackData.get("first_frame").`as`(String::class.java),
+                ""
             ),
             BilibiliAudioTrack.TrackType.VIDEO,
             bvid,
@@ -109,6 +114,9 @@ class BilibiliAudioSourceManager : AudioSourceManager {
 
 
     private fun loadVideoAnthology(trackData: JsonBrowser, page: Int): AudioPlaylist {
+        val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
+        log.atInfo().log("DEBUG: ${trackData.text()}")
+
         val playlistName = trackData.get("title").`as`(String::class.java)
         val author = trackData.get("owner").get("name").`as`(String::class.java)
         val bvid = trackData.get("bvid").`as`(String::class.java)
@@ -116,6 +124,7 @@ class BilibiliAudioSourceManager : AudioSourceManager {
         val tracks = ArrayList<AudioTrack>()
 
         for (item in trackData.get("pages").values()) {
+            log.atInfo().log("DEBUG: ${item.text()}")
             tracks.add(BilibiliAudioTrack(
                 AudioTrackInfo(
                     item.get("part").`as`(String::class.java),
@@ -123,7 +132,9 @@ class BilibiliAudioSourceManager : AudioSourceManager {
                     item.get("duration").asLong(0) * 1000,
                     bvid,
                     false,
-                    getVideoUrl(bvid, item.get("page").`as`(Int::class.java))
+                    getVideoUrl(bvid, item.get("page").`as`(Int::class.java)),
+                    item.get("first_frame").`as`(String::class.java),
+                    ""
                 ),
                 BilibiliAudioTrack.TrackType.VIDEO,
                 bvid,
@@ -137,6 +148,9 @@ class BilibiliAudioSourceManager : AudioSourceManager {
 
     private fun loadAudio(trackData: JsonBrowser): AudioTrack {
         val sid = trackData.get("statistic").get("sid").asLong(0).toString()
+
+        val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
+        log.atInfo().log("DEBUG: ${trackData.text()}")
 
         return BilibiliAudioTrack(
             AudioTrackInfo(
@@ -155,6 +169,9 @@ class BilibiliAudioSourceManager : AudioSourceManager {
     }
 
     private fun loadAudioPlaylist(playlistData: JsonBrowser): AudioPlaylist {
+        val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
+        log.atInfo().log("DEBUG: ${playlistData.text()}")
+
         val playlistName = playlistData.get("title").`as`(String::class.java)
         val sid = playlistData.get("statistic").get("sid").asLong(0).toString()
 
