@@ -1,13 +1,37 @@
 # lavabili-plugin
 <img src="https://github.com/user-attachments/assets/1bfb4369-6438-4e5e-9e6e-72b94cb69a37" alt="Alt Text" style="width:33%; height:auto;">
 
+## What?
 A lavalink plugin written to add Bilibili as an additional audio playing source.
 
+## Why?
 This plugin is rebuilt for latest Lavalink (v4) based on [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
 
 Differences:
 + Removed unknown & unresolvable build dependencies in [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
 + `artworkUrl` extraction from **Bilibili** videos.
+
+## How?
+In your `application.yml`, add the following dependency under `lavalink/plugins` section.
+```
+...
+lavalink:
+  plugins:
+    - dependency: "com.github.hoyiliang:lavabili-plugin:1e2de78246"
+      snapshot: false
+      repository: "https://jitpack.io"
+...
+```
+
+Then, under `lavalink/server/sources` section, add `bilibili: true`.
+```
+...
+lavalink:
+  server:
+    sources:
+      bilibili: true
+...
+```
 
 **Note: The decision to use `MIT License` is derived from [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).**
 
