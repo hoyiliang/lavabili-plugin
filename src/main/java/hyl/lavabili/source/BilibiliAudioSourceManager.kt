@@ -94,6 +94,12 @@ class BilibiliAudioSourceManager : AudioSourceManager {
         val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
         log.atInfo().log("DEBUG: ${trackData.text()}")
 
+        val artworkUrl: String = if (trackData.get("pic").`as`(String::class.java) != null) {
+            trackData.get("pic").`as`(String::class.java)
+        } else {
+            trackData.get("first_frame").`as`(String::class.java)
+        }
+
         return BilibiliAudioTrack(
             AudioTrackInfo(
                 trackData.get("title").`as`(String::class.java),
@@ -102,7 +108,7 @@ class BilibiliAudioSourceManager : AudioSourceManager {
                 bvid,
                 false,
                 getVideoUrl(bvid),
-                trackData.get("first_frame").`as`(String::class.java),
+                artworkUrl,
                 ""
             ),
             BilibiliAudioTrack.TrackType.VIDEO,
@@ -125,6 +131,12 @@ class BilibiliAudioSourceManager : AudioSourceManager {
 
         for (item in trackData.get("pages").values()) {
             log.atInfo().log("DEBUG: ${item.text()}")
+            val artworkUrl: String = if (trackData.get("pic").`as`(String::class.java) != null) {
+                item.get("pic").`as`(String::class.java)
+            } else {
+                item.get("first_frame").`as`(String::class.java)
+            }
+
             tracks.add(BilibiliAudioTrack(
                 AudioTrackInfo(
                     item.get("part").`as`(String::class.java),
@@ -133,7 +145,7 @@ class BilibiliAudioSourceManager : AudioSourceManager {
                     bvid,
                     false,
                     getVideoUrl(bvid, item.get("page").`as`(Int::class.java)),
-                    item.get("first_frame").`as`(String::class.java),
+                    artworkUrl,
                     ""
                 ),
                 BilibiliAudioTrack.TrackType.VIDEO,
