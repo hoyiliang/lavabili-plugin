@@ -9,6 +9,8 @@ Differences:
 + Removed unknown & unresolvable build dependencies in [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
 + `artworkUrl` extraction from **Bilibili** videos.
 
+**Note: The decision to use `MIT License` is derived from [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).**
+
 # lavalink-plugin-template
 
 **Note: This project has been converted to use Kotlin 1.8.22.**
