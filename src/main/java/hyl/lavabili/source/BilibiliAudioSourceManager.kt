@@ -94,10 +94,10 @@ class BilibiliAudioSourceManager : AudioSourceManager {
         val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
         log.atInfo().log("DEBUG: ${trackData.text()}")
 
-        val artworkUrl: String = if (trackData.get("pic").`as`(String::class.java) != null) {
-            trackData.get("pic").`as`(String::class.java)
+        val artworkUrl: String? = if (trackData.get("pic").text() != null) {
+            trackData.get("pic").text()
         } else {
-            trackData.get("first_frame").`as`(String::class.java)
+            trackData.get("first_frame").text()
         }
 
         return BilibiliAudioTrack(
@@ -109,7 +109,7 @@ class BilibiliAudioSourceManager : AudioSourceManager {
                 false,
                 getVideoUrl(bvid),
                 artworkUrl,
-                ""
+                if (artworkUrl != null) "" else null
             ),
             BilibiliAudioTrack.TrackType.VIDEO,
             bvid,
@@ -131,10 +131,10 @@ class BilibiliAudioSourceManager : AudioSourceManager {
 
         for (item in trackData.get("pages").values()) {
             log.atInfo().log("DEBUG: ${item.text()}")
-            val artworkUrl: String = if (trackData.get("pic").`as`(String::class.java) != null) {
-                item.get("pic").`as`(String::class.java)
+            val artworkUrl: String? = if (trackData.get("pic").text() != null) {
+                trackData.get("pic").text()
             } else {
-                item.get("first_frame").`as`(String::class.java)
+                trackData.get("first_frame").text()
             }
 
             tracks.add(BilibiliAudioTrack(
@@ -146,7 +146,7 @@ class BilibiliAudioSourceManager : AudioSourceManager {
                     false,
                     getVideoUrl(bvid, item.get("page").`as`(Int::class.java)),
                     artworkUrl,
-                    ""
+                    if (artworkUrl != null) "" else null
                 ),
                 BilibiliAudioTrack.TrackType.VIDEO,
                 bvid,
