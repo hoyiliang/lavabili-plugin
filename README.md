@@ -17,7 +17,7 @@ In your `application.yml`, add the following dependency under `lavalink/plugins`
 ...
 lavalink:
   plugins:
-    - dependency: "com.github.hoyiliang:lavabili-plugin:1e2de78246"
+    - dependency: "com.github.hoyiliang:lavabili-plugin:3bac0c10cc"
       snapshot: false
       repository: "https://jitpack.io"
 ...
