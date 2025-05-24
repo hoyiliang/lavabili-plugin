@@ -13,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo
 import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist
 import hyl.lavabili.plugin.LavabiliPlugin
+import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,6 +21,8 @@ import java.io.DataInput
 import java.io.DataOutput
 
 class BilibiliAudioSourceManager : AudioSourceManager {
+    val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
+
     val httpInterface: HttpInterface
     private var playlistPageCountConfig: Int = -1
 
@@ -34,17 +37,32 @@ class BilibiliAudioSourceManager : AudioSourceManager {
     }
 
     override fun loadItem(manager: AudioPlayerManager, reference: AudioReference): AudioItem? {
+        log.atInfo().log("DEBUG: reference.identifier: ${reference.identifier}")
         val matcher = URL_PATTERN.matcher(reference.identifier)
         if (matcher.find()) {
             when (matcher.group("type")) {
                 "video" -> {
+                    log.atInfo().log("DEBUG: type: video")
                     val bvid = matcher.group("id")
                     val page = (matcher.group("page")?.toInt() ?: 1) - 1
+                    val type: String? = when (matcher.group("audioType")) {
+                        "av" -> "av"
+                        else -> null
+                    }
 
-                    val response = httpInterface.execute(HttpGet("${BASE_URL}x/web-interface/view?bvid=$bvid"))
+                    var response: CloseableHttpResponse
+                    if (type != null) {
+                        val aid = bvid.removePrefix("av")
+                        response = httpInterface.execute(HttpGet("${BASE_URL}x/web-interface/view?aid=$aid"))
+                    } else {
+                        response = httpInterface.execute(HttpGet("${BASE_URL}x/web-interface/view?bvid=$bvid"))
+                    }
+
+                    log.atInfo().log("DEBUG: attempt GET with URL: ${BASE_URL}x/web-interface/view?bvid=$bvid")
                     val responseJson = JsonBrowser.parse(response.entity.content)
 
                     val statusCode = responseJson.get("code").`as`(Int::class.java)
+                    log.atInfo().log("DEBUG: statusCode: $statusCode")
                     if (statusCode != 0) {
                         return AudioReference.NO_TRACK
                     }
@@ -225,7 +243,6 @@ class BilibiliAudioSourceManager : AudioSourceManager {
     }
 
     override fun decodeTrack(trackInfo: AudioTrackInfo, input: DataInput): AudioTrack {
-        val log: Logger = LoggerFactory.getLogger(LavabiliPlugin::class.java)
         val inputString = DataFormatTools.readNullableText(input)
         log.atInfo().log("DEBUG: $inputString")
         val trackType: BilibiliAudioTrack.TrackType = when (inputString) {
@@ -249,7 +266,7 @@ class BilibiliAudioSourceManager : AudioSourceManager {
     companion object {
         const val BASE_URL = "https://api.bilibili.com/"
         private val URL_PATTERN = Regex(
-            "^https?:\\/\\/(?:(?:www|m)\\.)?bilibili\\.com\\/(?<type>video|audio)\\/(?<id>(?:(?<audioType>am|au)?(?<audioId>[0-9]+))|[A-Za-z0-9]+)\\/?(?:(?:\\?p=(?<page>[\\d]+)(?:&.+)?)?|(?:\\?.*)?)\$"
+            "^https?:\\/\\/(?:(?:www|m)\\.)?bilibili\\.com\\/(?<type>video|audio)\\/(?<id>(?:(?<audioType>am|au|av)?(?<audioId>[0-9]+))|[A-Za-z0-9]+)\\/?(?:(?:\\?p=(?<page>[\\d]+)(?:&.+)?)?|(?:\\?.*)?)\$"
         ).toPattern()
 
         private fun getVideoUrl(id: String, page: Int? = null): String {
