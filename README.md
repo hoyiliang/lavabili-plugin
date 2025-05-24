@@ -10,6 +10,7 @@ This plugin is rebuilt for latest Lavalink (v4) based on [(Allvaa/lp-sources, 20
 Differences:
 + Removed unknown & unresolvable build dependencies in [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
 + `artworkUrl` extraction from **Bilibili** videos.
++ Support for older bilibili videos that uses `aid` videoId.
 
 ## How?
 In your `application.yml`, add the following dependency under `lavalink/plugins` section.
