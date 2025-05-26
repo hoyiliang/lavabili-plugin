@@ -8,7 +8,7 @@ A lavalink plugin written to add Bilibili as an additional audio playing source.
 This plugin is rebuilt for latest Lavalink (v4) based on [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
 
 Differences:
-+ Removed unknown & unresolvable build dependencies in [(Allvaa/lp-sources, 2022)](https://github.com/Allvaa/lp-sources).
++ Removed unknown & unresolvable build dependencies.
 + `artworkUrl` extraction from **Bilibili** videos.
 + Support for older bilibili videos that uses `aid` videoId.
 
